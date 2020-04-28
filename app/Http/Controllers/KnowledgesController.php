@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Knowledge; 
 use App\User;
+use App\Request_plan;
 
 class KnowledgesController extends Controller
 {
@@ -45,11 +46,14 @@ class KnowledgesController extends Controller
      */
     public function store(Request $request)
     {
+         
          $this->validate($request, [
             'content' => 'required',
         ]);
-        
+        $user = \Auth::user();
         $knowledge = new Knowledge;
+        $knowledge->user_id = $user->id;
+        $knowledge->user_name = $user->name;
         $knowledge->title = $request->title;
         $knowledge->content = $request->content;
         $knowledge->save();
@@ -122,14 +126,24 @@ class KnowledgesController extends Controller
 
         return redirect('/');
     }
-    public function mypage()
+    public function myplan()
     {
+        $data = [];
+        if (\Auth::check()) {
+            $user = \Auth::user();
+            $knowledges = $user->knowledges()->orderBy('created_at', 'desc')->paginate(10);
+            
+            
+            $data = [
+                'user' => $user,
+                'knowledges' => $knowledges,
+            ];
+        }
+        return view('knowledges.mypage', $data);
         
-        $knowledges = Knowledge::paginate(25);
         
-        return view('knowledges.mypage', [
-            'knowledges' => $knowledges,
-        ]);
+        
     }
+        
 }
 

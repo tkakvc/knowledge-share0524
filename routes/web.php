@@ -23,10 +23,10 @@ Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login')->name('login.post');
 Route::get('logout', 'Auth\LoginController@logout')->name('logout.get');
 
-Route::get('mypage', 'KnowledgesController@mypage');
+Route::get('mypage', 'KnowledgesController@myplan');
 
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('users', 'UsersController', ['only' => ['index', 'show']]);
 });
 
-//Route::resource('request.store','RequestController@store')->name('request.store');
+Route::post('request_plan','Request_plansController@store')->name('request_plan.store');

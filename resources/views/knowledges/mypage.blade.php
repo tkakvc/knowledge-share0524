@@ -117,17 +117,9 @@ main h4{margin-top:0;
             <div class="left">a</div>
             <div class="center">
             <h2>マイページ</h2>
-            @if (count($knowledges) > 0)
-                @foreach ($knowledges as $knowledge)
-                    <div class="plan"> 
-                        <h3>{!! link_to_route('knowledges.show', $knowledge->title, ['id' => $knowledge->id]) !!}</h3>
-                        <p>分類</p>
-                        <h4>{{ $knowledge->content }}</h4>
-                        <p>{{  $knowledge->user_id  }}</p>
-                    </div>
-                @endforeach
-            @endif
-            {{ $knowledges->links('pagination::bootstrap-4') }}
+                <h3>マイプラン</h3>
+                @include ('knowledges.myplan')
+                
             
             </div>
             <div class="right">b</div>

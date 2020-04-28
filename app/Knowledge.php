@@ -1,17 +1,18 @@
 <?php
 
 namespace App;
-
+use App\User;
+use App\Request_plan;
 use Illuminate\Database\Eloquent\Model;
 
 class Knowledge extends Model
 {
     protected $table = 'knowledges'; 
     protected $fillable = ['title', 'content','user_id'];
-    public function users(){
-        return $this->belongTo(User::class);
+    public function user(){
+        return $this->belongsTo(User::class);
     }
-    public function requests(){
-        return $tihs->belongTo(Request::class);
+    public function request_plan(){
+        return $this->belongsTo(Request_plan::class);
     }
 }

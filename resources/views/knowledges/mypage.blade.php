@@ -119,7 +119,7 @@ main h4{margin-top:0;
             <h2>マイページ</h2>
                 <h3>マイプラン</h3>
                 @include ('knowledges.myplan')
-                
+                @include ('knowledges.requestplan')
             
             </div>
             <div class="right">b</div>

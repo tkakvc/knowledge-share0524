@@ -12,7 +12,7 @@ class Knowledge extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
-    public function request_plan(){
-        return $this->belongsTo(Request_plan::class);
+    public function request_plans(){
+        return $this->hasMany(Request_plan::class);
     }
 }

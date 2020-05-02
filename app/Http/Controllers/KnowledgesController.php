@@ -126,24 +126,42 @@ class KnowledgesController extends Controller
 
         return redirect('/');
     }
-    public function myplan()
-    {
+    public function myplan(){   
         $data = [];
         if (\Auth::check()) {
             $user = \Auth::user();
-            $knowledges = $user->knowledges()->orderBy('created_at', 'desc')->paginate(10);
-            
+            $knowledges = Knowledge::get();
+            $request_plans = Request_plan::where('plan_status','pending')
+            ->join('knowledges','knowledges.id','=','request_plans.knowledge_id')->where('user_id',$user->id)
+            ->get();
+            // $knowledges = $user->knowledges()->where('user_id',$user->id)->orderBy('created_at', 'desc')->paginate(10);
+           
+            $data = [
+                'user' => $user,
+                'knowledges' => $knowledges,
+                'request_plans' => $request_plans,
+            ];
+        }
+        return view('knowledges.myplan', $data);
+    }
+     public function requestplan(){
+       $data = [];
+        if (\Auth::check()) {
+            $user = \Auth::user();
+            $request_plans = Request_plan::where('request_user_id',$user->id)
+            ->join('knowledges','knowledges.id','=','request_plans.knowledge_id')
+            ->get();
+            dump($request_plans);
+            // dump($request_plans[0]->request_user_id);
+            $knowledges = Knowledge::get();
             
             $data = [
                 'user' => $user,
                 'knowledges' => $knowledges,
+                'request_plans' => $request_plans,
             ];
         }
-        return view('knowledges.mypage', $data);
-        
-        
-        
-    }
-        
+        return view('knowledges.requestplan', $data);
+     }
 }
 

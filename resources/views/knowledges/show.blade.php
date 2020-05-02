@@ -122,7 +122,7 @@ main h4{margin-top:0;
                         <p>分類</p>
                         <h4>
                             {{ $knowledge->content }}
-                         <p> {{  $knowledge->user->name."さん" }} </p>
+                         <p> {{  "さん" }} </p>
                          {!! Form::open(['route' => ['request_plan.store']]) !!}
                          {{Form::hidden('id', $knowledge->id)}}
             {!! Form::submit('申し込む', ['class' => "btn btn-primary btn-block"]) !!}

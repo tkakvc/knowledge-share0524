@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Knowledge;
 use App\Request_plan;
+use App\Chat;
 class User extends Authenticatable
 {
     use Notifiable;

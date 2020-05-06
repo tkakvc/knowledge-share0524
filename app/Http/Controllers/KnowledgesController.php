@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Knowledge; 
 use App\User;
 use App\Request_plan;
+use App\Chat;
 
 class KnowledgesController extends Controller
 {
@@ -129,10 +130,11 @@ class KnowledgesController extends Controller
     public function myplan(){   
         $data = [];
         if (\Auth::check()) {
+            $chats = Chat::get();
             $user = \Auth::user();
             $knowledges = Knowledge::get();
             $request_plans = Request_plan::where('plan_status','pending')
-            ->join('knowledges','knowledges.id','=','request_plans.knowledge_id')->where('user_id',$user->id)
+            ->join('knowledges','knowledges.id','=','request_plans.knowledge_id')->where('user_id',$user->id)->orWhere('plan_status','approved')
             ->get();
             // $knowledges = $user->knowledges()->where('user_id',$user->id)->orderBy('created_at', 'desc')->paginate(10);
            
@@ -140,8 +142,10 @@ class KnowledgesController extends Controller
                 'user' => $user,
                 'knowledges' => $knowledges,
                 'request_plans' => $request_plans,
+                'chats' => $chats
             ];
         }
+        dump($data);
         return view('knowledges.myplan', $data);
     }
      public function requestplan(){

@@ -31,3 +31,9 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::post('request_plan','Request_plansController@store')->name('request_plan.store');
+Route::post('myplan','Request_plansController@receive')->name('request_plan.receive');
+//チャット
+Route::get('chat.request','ChatsController@request')->name('chat.request');
+Route::get('chat.myplan','ChatsController@myplan')->name('chat.myplan');
+Route::post('chat.submit','ChatsController@submit')->name('chat.submit');
+Route::post('chat.receive','ChatsController@receive')->name('chat.receive');

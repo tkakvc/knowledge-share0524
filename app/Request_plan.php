@@ -3,6 +3,7 @@
 namespace App;
 use App\Knowledge;
 use App\User;
+use App\Chat;
 use Illuminate\Database\Eloquent\Model;
 
 class Request_plan extends Model

@@ -3,13 +3,13 @@
                    
     <div class="plan"> 
     <h3>{!! link_to_route('knowledges.show', $request_plan->title, ['id' => $request_plan->id]) !!}</h3>
-    @if($request_plan->plan_status == 'pending')
+   
     <p>申し込みが来ています！</p>
     {!! Form::open(['route' => ['request_plan.receive']]) !!}
-                         {{Form::hidden('id', $request_plan->id)}}
+                         {{Form::hidden('status_id', $request_plan->status_id)}}
             {!! Form::submit('承認する', ['class' => "btn btn-primary btn-block"]) !!}
         {!! Form::close() !!}
-    @endif
+   
     @if($request_plan->plan_status == 'approved')
     {!! link_to_route('chat.myplan', "メッセージ画面へ進む") !!}
     @endif

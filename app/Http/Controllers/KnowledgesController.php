@@ -73,9 +73,22 @@ class KnowledgesController extends Controller
     {
         $user = \Auth::user();
         $knowledge = Knowledge::find($id);
-
+        //ログインユーザー＝プラン作成者　であるとき
+        if($user->id == $knowledge->user_id){
+        $request_plans = Request_plan::where('user_id',$user->id)
+            ->join('knowledges','knowledges.id','=','request_plans.knowledge_id')->where('knowledge_id',$id)
+            ->first();
+        }
+        //ログインユーザー＝依頼者　であるとき
+        else{
+        $request_plans = Request_plan::where('request_user_id',$user->id)
+            ->join('knowledges','knowledges.id','=','request_plans.knowledge_id')->where('knowledge_id',$id)
+            ->first();
+        }
+        $request_plan = Request_plan::find($request_plans->status_id);
         return view('knowledges.show', [
             'knowledge' => $knowledge,
+            'request_plan' => $request_plan,
             'user' => $user,
         ]);
     }

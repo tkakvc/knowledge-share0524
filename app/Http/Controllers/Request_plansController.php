@@ -25,8 +25,8 @@ class Request_plansController extends Controller
     public function receive(Request $request)
     {
         $user = \Auth::user();
-        $request_plans = Request_plan::find(/*$request->id*/2);
-        $request_plans->plan_status = "approved";
+        $request_plans = Request_plan::find($request->id);
+        $request_plans->plan_status = "approve";
         $request_plans->save();
         dump($request);
         

@@ -122,20 +122,27 @@ main h4{margin-top:0;
                         <p>分類</p>
                         <h4>
                             {{ $knowledge->content }}
+                            
                          <p> {{  "さん" }} </p>
+                         
+                         @if($request_plan->request_user_id == $user->id  && $request_plan->plan_status == "pending" || $request_plan->plan_status == "approved" )
+                         <p>申し込み済です</p>
+                         @elseif($knowledge->user_id != $user->id)
                          {!! Form::open(['route' => ['request_plan.store']]) !!}
                          {{Form::hidden('id', $knowledge->id)}}
-            {!! Form::submit('申し込む', ['class' => "btn btn-primary btn-block"]) !!}
-        {!! Form::close() !!}
-                         
+                
+                         {!! Form::submit('申し込む', ['class' => "btn btn-primary btn-block"]) !!}
+                         {!!Form::close() !!}
+                         @endif
                         </h4>
                         
              
-                        
-                        {!! link_to_route('knowledges.edit', 'このプランを編集', ['id' => $knowledge->id], ['class' => 'btn btn-light']) !!}
+                        @if($user->id == $knowledge->user_id)
+                        {!! link_to_route('knowledges.edit','このプランを編集', ['id' => $knowledge->id], ['class' => 'btn btn-light']) !!}
                         {!! Form::model($knowledge, ['route' => ['knowledges.destroy', $knowledge->id], 'method' => 'delete']) !!}
                             {!! Form::submit('削除', ['class' => 'btn btn-danger']) !!}
                         {!! Form::close() !!}
+                        @endif
                     </div>
                 
             

@@ -21,29 +21,32 @@ class ChatsController extends Controller
             ];
         return view('chats.index',$data);
         }
+    //チャットのメッセージ送信
     public function submit(Request $request){
         $this->validate($request, [
             'message' => 'required',
         ]);
         $user = \Auth::user();
-        // $knowledge = Knowledge::find(7);
+        
         $knowledge = Knowledge::where('knowledge_id',$request->knowledge_id)->first();
-        $request_plans = Request_plan::where('knowledge_id',$request->knowledge_id)->first();
+        //request_plansテーブルのknowledge_idとプランのID（主キー）が一致するレコードを取得 
+        //さらにstatus_idで絞る。→1つのプランに対し複数のリクエストが来たときにstatus_idで区別するため
+        $request_plans = Request_plan::where('knowledge_id',$request->knowledge_id)->get()->where('status_id',$request->status_id)->first();
+        
         $chat = new Chat;
-         
         $chat->submit_user_id = $user->id;
         $chat->message = $request->message;
         $chat->read_flag = "unread";
         $chat->status_id = $request_plans->status_id;
-        if($user->id == $request_plans->request_user_id){
+        
+        if(//ログインユーザー＝依頼者 のとき メッセージの受信者はプラン作成者
+        $user->id == $request_plans->request_user_id){
             $chat->receive_user_id = $knowledge->user_id;
-        }else{
+        }else{//ログインユーザー＝プラン作成者 のとき メッセージの受信者は依頼者
             $chat->receive_user_id = $request_plans->request_user_id;
         }
         $chat->save();
-
         return back();
-    
         }
     }
    

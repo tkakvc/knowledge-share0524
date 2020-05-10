@@ -28,8 +28,6 @@ class RequestPlansController extends Controller
         $request_plans = Request_plan::find($request->status_id);
         $request_plans->plan_status = "approved";
         $request_plans->save();
-        dump($request);
-        
-         return redirect('/'); 
+        return redirect('/'); 
     }
 }

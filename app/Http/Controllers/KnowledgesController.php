@@ -89,7 +89,7 @@ class KnowledgesController extends Controller
      */
     public function edit($knowledge_id)
     {
-        //$knowledge = Knowledge::find($knowledge_id);
+        
         $knowledge = Knowledge::where('knowledge_id',$knowledge_id)->first();
         return view('knowledges.edit',[
             'knowledge' => $knowledge,]);
@@ -108,7 +108,6 @@ class KnowledgesController extends Controller
             'content' => 'required',
         ]);
         
-        //$knowledge = Knowledge::find($knowledge_id);
         $knowledge = Knowledge::where('knowledge_id',$knowledge_id)->first();
         $knowledge->content = $request->content;
         $knowledge->save();

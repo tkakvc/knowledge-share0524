@@ -23,9 +23,9 @@ Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login')->name('login.post'); 
 Route::get('logout', 'Auth\LoginController@logout')->name('logout.get');
 //マイページ
-Route::get('mypage', 'KnowledgesController@mypage')->name('knowledges.mypage');
-Route::get('myplan', 'KnowledgesController@myplan')->name('knowledges.myplan');
-Route::get('requestplan', 'KnowledgesController@requestplan')->name('knowledges.requestplan');
+Route::get('mypage', 'KnowledgesController@mypage')->name('mypage');
+Route::get('myplan', 'KnowledgesController@myplan')->name('myplan');
+Route::get('requestplan', 'KnowledgesController@requestplan')->name('requestplan');
 
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('users', 'UsersController', ['only' => ['index', 'show']]);

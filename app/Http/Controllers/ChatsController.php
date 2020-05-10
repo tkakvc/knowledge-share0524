@@ -10,75 +10,40 @@ use App\User;
 
 class ChatsController extends Controller
 {
-    public function request(){
+    public function getChatList($id){
         $user = \Auth::user();
-        
-        $request_plans = Request_plan::where('request_user_id',$user->id)
-            ->join('knowledges','knowledges.id','=','request_plans.knowledge_id')
-            ->first();
-        
-        
-        $chats = Chat::get();
+        $request_plans = Request_plan::find($id);
+        $chats = Chat::where('status_id',$id)->get();
         $data = [
             'user' => $user,
             'request_plans' => $request_plans,
             'chats' => $chats,
             ];
-        return view('chats.request',$data);
-        
-    }
-    
-    public function myplan(){
-        $user = \Auth::user();
-        
-        $request_plans = Request_plan::where('user_id',$user->id)
-            ->join('knowledges','knowledges.id','=','request_plans.knowledge_id')
-            ->first();
-        
-        
-        $chats = Chat::get();
-        $data = [
-            'user' => $user,
-            'request_plans' => $request_plans,
-            'chats' => $chats,
-            ];
-        return view('chats.request',$data);
-        
-    }
-    
+        return view('chats.index',$data);
+        }
     public function submit(Request $request){
         $this->validate($request, [
             'message' => 'required',
         ]);
         $user = \Auth::user();
-        $request_plans = Request_plan::where('request_user_id',$user->id)
-            ->join('knowledges','knowledges.id','=','request_plans.knowledge_id')
-            ->first();
+        // $knowledge = Knowledge::find(7);
+        $knowledge = Knowledge::where('knowledge_id',$request->knowledge_id)->first();
+        $request_plans = Request_plan::where('knowledge_id',$request->knowledge_id)->first();
         $chat = new Chat;
+         
         $chat->submit_user_id = $user->id;
-        $chat->receive_user_id = $request_plans->user_id;
         $chat->message = $request->message;
         $chat->read_flag = "unread";
+        $chat->status_id = $request_plans->status_id;
+        if($user->id == $request_plans->request_user_id){
+            $chat->receive_user_id = $knowledge->user_id;
+        }else{
+            $chat->receive_user_id = $request_plans->request_user_id;
+        }
         $chat->save();
-         
-        return redirect('chat.request');
+
+        return back();
+    
+        }
     }
-    public function receive(Request $request){
-        $this->validate($request, [
-            'message' => 'required',
-        ]);
-        $user = \Auth::user();
-        $request_plans = Request_plan::where('user_id','=',$user->id)
-            ->join('knowledges','knowledges.id','=','request_plans.knowledge_id')
-            ->first();
-        $chat = new Chat;
-        $chat->receive_user_id = $request_plans->request_user_id;
-        $chat->message = $request->message;
-        $chat->read_flag = "unread";
-        
-        $chat->submit_user_id = $user->id;
-        $chat->save();
-         
-        return redirect('chat.myplan');
-}
-}
+   

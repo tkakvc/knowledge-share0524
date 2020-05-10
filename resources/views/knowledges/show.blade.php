@@ -124,22 +124,30 @@ main h4{margin-top:0;
                             {{ $knowledge->content }}
                             
                          <p> {{  "さん" }} </p>
-                         
-                         @if($request_plan->request_user_id == $user->id  && $request_plan->plan_status == "pending" || $request_plan->plan_status == "approved" )
-                         <p>申し込み済です</p>
-                         @elseif($knowledge->user_id != $user->id)
+                          @if($knowledge->user_id == $user->id)
+                         <p>自分のプランです</p>
+                         @elseif (is_null($request_plan))
                          {!! Form::open(['route' => ['request_plan.store']]) !!}
-                         {{Form::hidden('id', $knowledge->id)}}
-                
+                         {{Form::hidden('knowledge_id', $knowledge->knowledge_id)}}
                          {!! Form::submit('申し込む', ['class' => "btn btn-primary btn-block"]) !!}
                          {!!Form::close() !!}
+                         @elseif($request_plan->request_user_id == $user->id && $request_plan->plan_status == "pending" || $request_plan->request_user_id == $user->id && $request_plan->plan_status == "approved")
+                         <p>申し込み済みです</p>
+                         
+                         @elseif($knowledge->user_id != $user->id)
+                         {!! Form::open(['route' => ['request_plan.store']]) !!}
+                         {{Form::hidden('knowledge_id', $knowledge->knowledge_id)}}
+                         {!! Form::submit('申し込む', ['class' => "btn btn-primary btn-block"]) !!}
+                         {!!Form::close() !!}
+                         
+                        
                          @endif
                         </h4>
                         
              
                         @if($user->id == $knowledge->user_id)
-                        {!! link_to_route('knowledges.edit','このプランを編集', ['id' => $knowledge->id], ['class' => 'btn btn-light']) !!}
-                        {!! Form::model($knowledge, ['route' => ['knowledges.destroy', $knowledge->id], 'method' => 'delete']) !!}
+                        {!! link_to_route('knowledges.edit','このプランを編集', ['knowledge_id' => $knowledge->knowledge_id], ['class' => 'btn btn-light']) !!}
+                        {!! Form::model($knowledge, ['route' => ['knowledges.destroy', $knowledge->knowledge_id], 'method' => 'delete']) !!}
                             {!! Form::submit('削除', ['class' => 'btn btn-danger']) !!}
                         {!! Form::close() !!}
                         @endif

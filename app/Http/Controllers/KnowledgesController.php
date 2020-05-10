@@ -18,7 +18,7 @@ class KnowledgesController extends Controller
      */
     public function index()
     {
-        //$users = User::all();
+        
         $knowledges = Knowledge::paginate(25);
         
         return view('knowledges.index', [
@@ -69,23 +69,11 @@ class KnowledgesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($knowledge_id)
     {
         $user = \Auth::user();
-        $knowledge = Knowledge::find($id);
-        //ログインユーザー＝プラン作成者　であるとき
-        if($user->id == $knowledge->user_id){
-        $request_plans = Request_plan::where('user_id',$user->id)
-            ->join('knowledges','knowledges.id','=','request_plans.knowledge_id')->where('knowledge_id',$id)
-            ->first();
-        }
-        //ログインユーザー＝依頼者　であるとき
-        else{
-        $request_plans = Request_plan::where('request_user_id',$user->id)
-            ->join('knowledges','knowledges.id','=','request_plans.knowledge_id')->where('knowledge_id',$id)
-            ->first();
-        }
-        $request_plan = Request_plan::find($request_plans->status_id);
+        $knowledge = Knowledge::where('knowledge_id',$knowledge_id)->first();
+        $request_plan = Request_plan::where('knowledge_id',$knowledge_id)->first();
         return view('knowledges.show', [
             'knowledge' => $knowledge,
             'request_plan' => $request_plan,
@@ -99,10 +87,10 @@ class KnowledgesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($knowledge_id)
     {
-        $knowledge = Knowledge::find($id);
-        
+        //$knowledge = Knowledge::find($knowledge_id);
+        $knowledge = Knowledge::where('knowledge_id',$knowledge_id)->first();
         return view('knowledges.edit',[
             'knowledge' => $knowledge,]);
     }
@@ -114,13 +102,14 @@ class KnowledgesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $knowledge_id)
     {
         $this->validate($request, [
             'content' => 'required',
         ]);
         
-        $knowledge = Knowledge::find($id);
+        //$knowledge = Knowledge::find($knowledge_id);
+        $knowledge = Knowledge::where('knowledge_id',$knowledge_id)->first();
         $knowledge->content = $request->content;
         $knowledge->save();
 
@@ -143,22 +132,20 @@ class KnowledgesController extends Controller
     public function myplan(){   
         $data = [];
         if (\Auth::check()) {
-            $chats = Chat::get();
             $user = \Auth::user();
-            $knowledges = Knowledge::get();
-            $request_plans = Request_plan::where('plan_status','pending')
-            ->join('knowledges','knowledges.id','=','request_plans.knowledge_id')->where('user_id',$user->id)->orWhere('plan_status','approved')
+            $knowledges = Knowledge::where('user_id',$user->id)->get();
+            $request_plans = Request_plan::where('user_id',$user->id)
+            ->join('knowledges','knowledges.knowledge_id','=','request_plans.knowledge_id')->join('users','users.id','=','request_plans.request_user_id')
             ->get();
-            // $knowledges = $user->knowledges()->where('user_id',$user->id)->orderBy('created_at', 'desc')->paginate(10);
            
             $data = [
                 'user' => $user,
                 'knowledges' => $knowledges,
                 'request_plans' => $request_plans,
-                'chats' => $chats
+                
             ];
         }
-        dump($data);
+        
         return view('knowledges.myplan', $data);
     }
      public function requestplan(){
@@ -166,19 +153,26 @@ class KnowledgesController extends Controller
         if (\Auth::check()) {
             $user = \Auth::user();
             $request_plans = Request_plan::where('request_user_id',$user->id)
-            ->join('knowledges','knowledges.id','=','request_plans.knowledge_id')
+            ->join('knowledges','knowledges.knowledge_id','=','request_plans.knowledge_id')
             ->get();
-            dump($request_plans);
-            // dump($request_plans[0]->request_user_id);
+           
+           
             $knowledges = Knowledge::get();
             
             $data = [
                 'user' => $user,
                 'knowledges' => $knowledges,
                 'request_plans' => $request_plans,
+              
             ];
         }
         return view('knowledges.requestplan', $data);
      }
+     public function mypage(){
+         
+        
+         return view('knowledges.mypage');
+     }
+     
 }
 

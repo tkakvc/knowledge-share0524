@@ -137,7 +137,7 @@ main h4{margin-top:0;
                             </div>
         
                             {!! Form::submit('更新', ['class' => 'btn btn-primary']) !!}
-        
+                            {{Form::hidden('knowledge_id', $knowledge->knowledge_id)}}
                         {!! Form::close() !!}
                     </div>
                 </div>

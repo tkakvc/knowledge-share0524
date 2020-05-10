@@ -99,31 +99,28 @@ main h4{margin-top:0;
     <body>    
         <header>
             <div class="header-left">
-              <h1><a href="#">ナレッジシェア</a></h1>
+              <h1><a>{!! link_to_route('knowledges.index','ナレッジシェア') !!}</a></h1>
             </div>
             <div class="navbar">
+              @if (Auth::check())
               <ul>
-                  <li><a> {!! link_to_route('knowledges.create', 'プラン作成', [], ['class' => 'btn btn-primary']) !!}</a></li>
-
-                  <li><a href="#">ログイン</a></li>
-                  <li><a>{!! link_to_route('signup.get', '新規登録', [], ['class' => 'btn btn-lg btn-primary']) !!}</a></li>
-                
-              </ul>  
+                  <li><a>{!! link_to_route('knowledges.index','トップページ') !!}</a></li>
+                  <li><a> {!! link_to_route('knowledges.create', 'プラン作成') !!}</a></li>
+                  <li><a> {{ "チャットページへ" }}</a></li>
+                  <li><a> {!! link_to_route('logout.get', 'ログアウト') !!}</a></li>
+              </ul> 
+              @endif
+              
             </div>
+            <main>
+                <h2>{!! link_to_route('knowledges.myplan','マイプラン')  !!}</h2>
+                <h2>{!! link_to_route('knowledges.requestplan','リクエストしたプラン') !!}</h2>
+                
+            </main>
             
         </header>
         
-        <main>
-            <div class="left">a</div>
-            <div class="center">
-            <h2>マイページ</h2>
-                <h3>マイプラン</h3>
-                @include ('knowledges.myplan')
-                @include ('knowledges.requestplan')
-            
-            </div>
-            <div class="right">b</div>
-        </main>
+        
         
          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>

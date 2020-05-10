@@ -105,8 +105,8 @@ main h4{margin-top:0;
               @if (Auth::check())
               <ul>
                   <li><a> {!! link_to_route('knowledges.create', 'プラン作成') !!}</a></li>
-                  <li><a href="knowledges.mypage"></a></li>
-                  <li><a>{!! link_to_route('logout.get', 'ログアウト') !!}</a></li>
+                  <li><a> {!! link_to_route('knowledges.mypage', 'マイページ') !!}</a></li>
+                  <li><a> {!! link_to_route('logout.get', 'ログアウト') !!}</a></li>
                 
               </ul> 
               @else
@@ -126,10 +126,11 @@ main h4{margin-top:0;
             @if (count($knowledges) > 0)
                 @foreach ($knowledges as $knowledge)
                     <div class="plan"> 
-                        <h3>{!! link_to_route('knowledges.show', $knowledge->title, ['id' => $knowledge->id]) !!}</h3>
+                        <h3>{!! link_to_route('knowledges.show', $knowledge->title, ['knowledge_id' => $knowledge->knowledge_id]) !!}</h3>
                         <p>分類</p>
                         <h4>{{ $knowledge->content }}</h4>
                         <p>{{  $knowledge->user_id  }}</p>
+                        
                     </div>
                 @endforeach
             @endif

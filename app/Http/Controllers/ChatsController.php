@@ -13,11 +13,19 @@ class ChatsController extends Controller
     public function getChatList($id){
         $user = \Auth::user();
         $request_plans = Request_plan::find($id);
+        $knowledge = Knowledge::where('knowledge_id',$request_plans->knowledge_id)->first();
+        if($user->id == $request_plans->request_user_id){
+            $receiver = User::where('id',$knowledge->user_id)->first();
+        }elseif($user->id == $knowledge->user_id){
+            $receiver = User::where('id',$request_plans->request_user_id)->first();
+        }
+        
         $chats = Chat::where('status_id',$id)->get();
         $data = [
             'user' => $user,
             'request_plans' => $request_plans,
             'chats' => $chats,
+            'receiver' => $receiver,
             ];
         return view('chats.index',$data);
         }

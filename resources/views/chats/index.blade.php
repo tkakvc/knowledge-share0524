@@ -1,305 +1,135 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>チャットサンプル</title>
-     <link type="text/css" rel="stylesheet" href="chat.css">
-     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-     <style type="text/css">
-         #your_container{
-    /* 高さや幅など、好きな様に設定
-    bms_messages_containerの方で、縦横いっぱいに広がってくれるので、
-    ここで充てた高さと横幅がそのままスタイルになる仕組み */
 
-    height:600px;/*ここはご自由に*/
-    width: 50%;/*ここはご自由に*/
-}
-/* チャットの外側部分① */
-#bms_messages_container{
-    height: 100%;/*your_containerに対して100%になる */
-    width: 100%;/*your_containerに対して100%になる */
-    background-color: #eee;
-}
+@extends('layouts.app')
 
-/* ヘッダー部分② */
-#bms_chat_header {
-    padding: 6px;/*隙間調整*/
-    font-size: 16px;
-    height: 34px;
-    background: #ddd;
-    border: 1px solid #ccc;
-}
-    /* ステータスマークとユーザー名 */
-    #bms_chat_user_status {
-        float: left;/* bms_chat_headerに対して左寄せ */
-    }
-    /* ステータスマーク */
-    #bms_status_icon {
-        float: left;/* bms_chat_user_statusに対して左寄せ */
-        line-height: 2em;/*高さ調整*/
-    }
-    /* ユーザー名 */
-    #bms_chat_user_name {
-        float: left;/* bms_chat_user_statusに対して左寄せ */
-        line-height: 2em;/*高さ調整*/
-        padding-left: 8px;
-    }
+@section('content')
 
-/* タイムライン部分③ */
-#bms_messages {
-    overflow: auto;/* スクロールを効かせつつ、メッセージがタイムラインの外に出ないようにする */
-    height:100%;/*テキストエリアが下に張り付く様にする*/
-    border-right: 1px solid #ddd;
-    border-left: 1px solid #ddd;
-    background-color: #eee;
-    box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.2) inset;/*ヘッダーの下に影を入れる*/
-}
-    /* メッセージ全般のスタイル */
-    .bms_message {
-        margin: 0px;
-        padding: 0 14px;/*吹き出しがタイムラインの側面にひっつかない様に隙間を開ける*/
-        font-size: 16px;
-        word-wrap: break-word;/* 吹き出し内で自動で改行 */
-        white-space: normal;/*指定widthに合わせて、文字を自動的に改行*/
-    }
-    /* メッセージ１（左側） */
-    .bms_left {
-        float: left;/*吹き出しをbms_messagesに対して左寄せ*/
-        line-height: 1.3em;
-    }
-    /* メッセージ２（右側） */
-    .bms_right {
-        float: right;/*吹き出しをbms_messagesに対して右寄せ*/
-        line-height: 1.3em;
-    }
-    /* 回り込みを解除 */
-    .bms_clear {
-        clear: both; /* 左メッセージと右メッセージの回り込み(float)の効果の干渉を防ぐために必要（これが無いと、自分より下のメッセージにfloatが影響する） */
-
-    }
-
-/* テキストエリア、送信ボタン④ */
-#bms_send {
-    background-color:#eee;/*タイムラインの色と同じにする*/
-    border-right: 1px solid #ddd;
-    border-left: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    height: 48px;
-    padding: 4px;
-}
-    #bms_send_message{
-        width: calc(100% - 75px);/*常に送信ボタンの横幅を引いたサイズに動的に計算*/
-        line-height: 16px;
-        height: 48px;
-        padding: 14px 6px 0px 6px;/*文字がテキストエリアの中心になる様に隙間調整*/
-        border: 1px solid #ccc;
-        border-radius: 4px;/*角丸*/
-        text-align: left;/*文字を左寄せ*/
-        box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.2) inset;/*内側に影を入れてテキストエリアらしくした*/
-        box-sizing: border-box;/*paddingとborderの要素の高さと幅の影響をなくす（要素に高さと幅を含める）*/
-
-    }
-    #bms_send_btn {
-        width: 72px;
-        height: 48px;
-        font-size: 16px;
-        line-height: 3em;
-        float: right;/*bms_sendに対して右寄せ*/
-        color: #fff;
-        font-weight: bold;
-        background: #bcbcbc;
-        text-align: center;/*文字をボタン中央に表示*/
-        border: 1px solid #bbb;
-        border-radius: 4px;/*角丸*/
-        box-sizing: border-box;/*paddingとborderの要素の高さと幅の影響をなくす（要素に高さと幅を含める）*/
-    }
-    #bms_send_btn:hover {
-        background: #13178E; /*マウスポインタを当てた時にアクティブな色になる*/
-        cursor: pointer;/*マウスポインタを当てた時に、カーソルが指の形になる*/
-    }
-     .bms_message {
-        
-    }
-        /*
-         *追加
-         */
-        .bms_message_box{
-            margin-top: 20px;/*上下の吹き出しがひっつかない様に隙間を入れる*/
-            max-width: 100%;/*文字が長くなった時に吹き出しがタイムラインからはみ出さない様にする*/
-            font-size: 16px;
-        }
-            /*
-            *追加
-            */
-            .bms_message_content{
-                padding: 20px;/*文字や画像（コンテンツ）の外側に隙間を入れる*/
-            }
-
-        /* メッセージ１（左側） */
-        .bms_left {
-            float: left;/*吹き出しをbms_messagesに対して左寄せ*/
-            line-height: 1.3em;
-        }
-            /*
-            *追加
-            */
-            .bms_left .bms_message_box {
-                color: #333;/*テキストを黒にする*/
-                background: #fff;
-                border: 2px solid #13178E;
-                border-radius: 30px 30px 30px 0px;/*左下だけ尖らせて吹き出し感を出す*/
-                margin-right: 50px;/*左側の発言だとわかる様に、吹き出し右側に隙間を入れる*/
-            }
-
-        /* メッセージ２（右側） */
-        .bms_right {
-            float: right;/*吹き出しをbms_messagesに対して右寄せ*/
-            line-height: 1.3em;
-        }
-            /*
-            *追加
-            */
-            .bms_right .bms_message_box {
-                color: #fff;/*テキストを白にする*/
-                background: #13178E;
-                border: 2px solid #13178E;
-                border-radius: 30px 30px 0px 30px;/*右下だけ尖らせて吹き出し感を出す*/
-                margin-left: 50px;/*右側の発言だとわかる様に、吹き出し左側に隙間を入れる*/
-            }
-            #bms_send {
-    background-color:#eee;/*タイムラインの色と同じにする*/
-    border-right: 1px solid #ddd;
-    border-left: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    height: 48px;
-    padding: 4px;
-}
-    #bms_send_message{
-        width: calc(100% - 75px);/*常に送信ボタンの横幅を引いたサイズに動的に計算*/
-        line-height: 16px;
-        height: 48px;
-        padding: 14px 6px 0px 6px;/*文字がテキストエリアの中心になる様に隙間調整*/
-        border: 1px solid #ccc;
-        border-radius: 4px;/*角丸*/
-        text-align: left;/*文字を左寄せ*/
-        box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.2) inset;/*内側に影を入れてテキストエリアらしくした*/
-        box-sizing: border-box;/*paddingとborderの要素の高さと幅の影響をなくす（要素に高さと幅を含める）*/
-
-    }
-    #bms_send_btn {
-        width: 72px;
-        height: 48px;
-        font-size: 16px;
-        line-height: 3em;
-        float: right;/*bms_sendに対して右寄せ*/
-        color: #fff;
-        font-weight: bold;
-        background: #bcbcbc;
-        text-align: center;/*文字をボタン中央に表示*/
-        border: 1px solid #bbb;
-        border-radius: 4px;/*角丸*/
-        box-sizing: border-box;/*paddingとborderの要素の高さと幅の影響をなくす（要素に高さと幅を含める）*/
-    }
-    #bms_send_btn:hover {
-        background: #13178E; /*マウスポインタを当てた時にアクティブな色になる*/
-        cursor: pointer;/*マウスポインタを当てた時に、カーソルが指の形になる*/
-    }
-    #bms_send {
-    background-color:#eee;/*タイムラインの色と同じにする*/
-    border-right: 1px solid #ddd;
-    border-left: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    height: 48px;
-    padding: 4px;
-}
-    #bms_send_message{
-        width: calc(100% - 75px);/*常に送信ボタンの横幅を引いたサイズに動的に計算*/
-        line-height: 16px;
-        height: 48px;
-        padding: 14px 6px 0px 6px;/*文字がテキストエリアの中心になる様に隙間調整*/
-        border: 1px solid #ccc;
-        border-radius: 4px;/*角丸*/
-        text-align: left;/*文字を左寄せ*/
-        box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.2) inset;/*内側に影を入れてテキストエリアらしくした*/
-        box-sizing: border-box;/*paddingとborderの要素の高さと幅の影響をなくす（要素に高さと幅を含める）*/
-
-    }
-    #bms_send_btn {
-        width: 72px;
-        height: 48px;
-        font-size: 16px;
-        line-height: 3em;
-        float: right;/*bms_sendに対して右寄せ*/
-        color: #fff;
-        font-weight: bold;
-        background: #bcbcbc;
-        text-align: center;/*文字をボタン中央に表示*/
-        border: 1px solid #bbb;
-        border-radius: 4px;/*角丸*/
-        box-sizing: border-box;/*paddingとborderの要素の高さと幅の影響をなくす（要素に高さと幅を含める）*/
-    }
-    #bms_send_btn:hover {
-        background: #13178E; /*マウスポインタを当てた時にアクティブな色になる*/
-      
-     </style>
-</head>
-<body>
     <!-- 自分やユーザーの情報 -->
-    <h3 id="me" user_id="1">{{ $user->name }}</h3>
-    <h3 id="partner" thread_id="1">相手</h3>
-    <div id="users">
-        <button class="user" user_id="2">ユーザー2</button>
-    </div>
-    <br>
-    <div id="your_container">
-
-        <!-- チャットの外側部分① -->
-        <div id="bms_messages_container">
-            <!-- ヘッダー部分② -->
-            <div id="bms_chat_header">
-                <!--ステータス-->
-                <div id="bms_chat_user_status">
-                    <!--ステータスアイコン-->
-                    <div id="bms_status_icon">●</div>
-                    <!--ユーザー名-->
-                    <div id="bms_chat_user_name">
-                        {{ $receiver->name }}
-                   </div>
-                </div>
-            </div>
+    
+<style>
+    .box{
+        height: 100%;
+        font-family: "Hiragino Kaku Gothic ProN","メイリオ", sans-serif;
+        font-size: 16px;
+        line-height: 1.8;
+        color:black;
+        margin-bottom:14px;
+    }
+    .card-header{
+        background-color:rgba(0, 0, 60, 0.8);
+        color:white;
+        font-weight:bold;
+        font-size:24px;
+    }
+    .card-body{
+        background-color:rgba(188, 182, 0, 0.02);
+    }
+    
+.send {
+  margin: 10px 0;
+}
+.recieve{
+    margin: 10px 0;
+}
+.send p{
+     display: inline-block;
+      position: relative; 
+      margin: 0 10px 0 0;
+      padding: 8px 16px;
+      max-width: 80%;
+      border-radius: 8px;
+      font-size: 15px;
+     background: rgba(20, 170, 235, 0.30);
+     filter: drop-shadow(6px 6px 6px rgba(0,0,0,0.4));
+     
+    }
+.recieve p {
+     display: inline-block;
+      position: relative; 
+      margin: 0 10px 0 0;
+      padding: 8px 16px;
+      max-width: 80%;
+      border-radius: 8px;
+      font-size: 15px;
+     background-color:rgba(56, 230, 300, 0.22) ;
+     filter: drop-shadow(6px 6px 6px rgba(0,0,0,0.4));
+    }
+.send :after {
+  content: "";
+  position: absolute;
+  top: 6px; 
+  right: -24px;
+  border: 6px solid transparent;
+  
+  border-left: 18px solid rgba(20, 170, 235, 0.25);
+  
+  
+}
+.recieve p:after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 6px; 
+  left: -24px;
+  border: 6px solid transparent;
+  border-right: 18px solid rgba(56, 214, 238, 0.17);
+  
+}
+    
+</style>
+    
+   
+            
+             
 
             <!-- タイムライン部分③ -->
             <div id="bms_messages">
 
                 <!--メッセージ１（左側）-->
-                <div id="room">
-        @foreach($chats as $chat)
-            {{--   送信したメッセージ  --}}
-            @if($chat->submit_user_id == $user->id)
-                <div class="send" style="text-align: right">
-                    <p>{{$chat->message}}</p>
-                </div>
- 
-            @endif
- 
-            {{--   受信したメッセージ  --}}
-            @if($chat->receive_user_id == $user->id)
-                <div class="recieve" style="text-align: left">
-                    <p>{{$chat->message}}</p>
-                </div>
-            @endif
-        @endforeach
-    </div>
+            <div class="box">
+               <section class="card">
+                   {{-- 相手のユーザー名 --}}
+                   <div class="card-header">{{$receiver->name}}</div>
+                   
+                   {{-- チャットの一覧 --}}
+                   <div class="card-body">
+                        @foreach($chats as $chat)
+                            
+                            {{--   送信したメッセージ  --}}
+                            @if($chat->submit_user_id == $user->id)
+                                <div class="send" style="text-align: right" >
+                                    <p>{{$chat->message}}</p>
+                                </div>
+                 
+                            @endif
+             
+                            {{--   受信したメッセージ  --}}
+                            @if($chat->receive_user_id == $user->id)
+                                <div class="recieve" style="text-align: left" >
+                                    <p>{{$chat->message}}</p>
+                                </div>
+                            @endif
+                        @endforeach
+                   </div>
+                </section>
+            </div>
+              
+              
+              {{--  メッセージ送信フォーム --}}
+              <section>
                 
-            </div>
-
-            <!-- テキストボックス、送信ボタン④ -->
-            <div id="bms_send">
-                <textarea id="bms_send_message"></textarea>
-                <div id="bms_send_btn">送信</div>
-            </div>
+                {!! Form::model($chats, ['route' => 'chat.submit']) !!}
+                  <div class="input-group" style="margin-bottom:100px">
+                    {!! Form::text('message','', ['class' => 'form-control']) !!}
+                    <span class="input-group-btn"><button class="btn btn-info" type="button">
+                        {{Form::hidden('knowledge_id', $request_plans->knowledge_id)}}
+                        {{Form::hidden('status_id', $request_plans->status_id)}}送信</button></span>
+                  </div>
+                {!! Form::close() !!}
+              
+              </section>
+            
+           
         
   
-</body>
-</html>
+
+@endsection

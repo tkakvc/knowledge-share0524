@@ -22,17 +22,16 @@ Route::post('signup', 'Auth\RegisterController@register')->name('signup.post');
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login')->name('login.post'); 
 Route::get('logout', 'Auth\LoginController@logout')->name('logout.get');
-//マイページ
+//マイページ表示
 Route::get('mypage', 'KnowledgesController@mypage')->name('mypage');
-Route::get('myplan', 'KnowledgesController@myplan')->name('myplan');
-Route::get('requestplan', 'KnowledgesController@requestplan')->name('requestplan');
 
-Route::group(['middleware' => ['auth']], function () {
-    Route::resource('users', 'UsersController', ['only' => ['index', 'show']]);
-});
-
+//リクエスト
+ //リクエスト送信する
 Route::post('request_plan','RequestPlansController@store')->name('request_plan.store');
+ //リクエストを承認する
 Route::post('myplan','RequestPlansController@receive')->name('request_plan.receive');
 //チャット
+ //メッセージ一覧表示
 Route::get('chat.index/{id}','ChatsController@getChatList')->name('chat.index');
+ //メッセージを送信する
 Route::post('chat.submit','ChatsController@submit')->name('chat.submit');

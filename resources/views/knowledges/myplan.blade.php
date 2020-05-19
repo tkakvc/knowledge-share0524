@@ -13,9 +13,10 @@
         <p>{{ $request_plan->name }}さんから申し込みが来ています！</p>
         {!! Form::open(['route' => ['request_plan.receive']]) !!}
             {{Form::hidden('status_id', $request_plan->status_id)}}
-            {!! Form::submit('承認する', ['class' => "btn btn-primary btn-block"]) !!}
+            {!! Form::submit('承認する', ['class' => "btn btn-secondary btn-block"]) !!}
         {!! Form::close() !!}
-    @elseif($request_plan->plan_status == 'approved')
+    @endif
+    @if($request_plan->plan_status == 'approved')
         {!! link_to_route('chat.index', "メッセージ画面へ進む",['id' => $request_plan->status_id]) !!}
     @endif
     

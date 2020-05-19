@@ -1,44 +1,65 @@
 @extends('layouts.app')
 
 @section('content')
-    
+    <style>
+        h2 {
+            color:silver;
+            font-weight:normal;
+            text-align:center;
+        }
+        p{
+            color:rgba(103, 105, 98, 0.9);
+            margin:0;
+            text-align:center;
+            
+        }
+        .toukou{
+             text-align:center;
+        }
+        
+        .center{
+            width:1000px;
+        }
+        
+        button.btn {
+             padding: 10px 100px;
+            
+        }
+    </style>
     <div class="row">    
         
-        <div class="left">a</div>    
+        <div class="left"></div>    
     
         <div class="center">
             @if (count($errors) > 0)
                 <ul class="alert alert-danger" role="alert">
                     @foreach ($errors->all() as $error)
                         <li class="ml-4">{{ $error }}</li>
-                    @endforeach
+            @endforeach
                 </ul>
             @endif
-            <h2>プラン編集ページ</h2>
+            
+            <div class="form-horizontal">
+            <h2>プラン編集</h2>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-12">
                         {!! Form::model($knowledge, ['route' => ['knowledges.update',$knowledge->knowledge_id],'method' => 'put']) !!}
                             <div class="form-group">
-                                {!! Form::label('title', 'タイトル:') !!}
+                                {!! Form::label('title', 'タイトル') !!}
                                 {!! Form::text('title', null, ['class' => 'form-control']) !!}
                             </div>
                             <div class="form-group">
-                                {!! Form::label('content','プランの内容:' )!!}
-                                {!! Form::text('content',null,['class' => 'form-control']) !!}
+                                {!! Form::label('content','プランの内容' )!!}
+                                {!! Form::textarea('content',null,['class' => 'form-control']) !!}
                             </div>
-                            {!! Form::hidden('knowledge_id', $knowledge->knowledge_id) !!}
-                            {!! Form::submit('更新', ['class' => 'btn btn-primary']) !!}
+                            <div class="toukou"><button type="submit" class="btn btn-secondary" >更新</button></div>
                         {!! Form::close() !!}
                     </div>
                 </div>
         
-                <div class="plan"> 
-                    <h3>{{ $knowledge->title }}</h3>
-                    <p>分類</p>
-                    <h4>{{ $knowledge->content }}</h4>
-                </div>
+            </div>
         </div>
-        <div class="right">b</div>
+        <div class="right"></div>
     
     </div>
 @endsection

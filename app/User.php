@@ -52,18 +52,9 @@ class User extends Authenticatable
     //         return true;
     //     }
     // }
-        public function is_request_plan($knowledgeId)
-        {
-            return $this->request_plans()->where('knowledge_id', $knowledgeId)->exists();
-        }
-        public function feed_request_plans()
-        {
-        $my_request_plan_ids = $this->request_plan()->pluck('request_plans.id')->toArray();
-        $my_request_plan_ids[] = $this->id;
-        return Knowledge::whereIn('knowledge_id', $my_request_plan_ids);
+       
         }
     
     
     
     
-}

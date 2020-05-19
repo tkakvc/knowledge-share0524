@@ -5,6 +5,14 @@
         <title>ナレッジシェア</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Paytone+One&display=swap" rel="stylesheet">
+    <link href="https://fontawesome.com/icons/bolt?style=solid" rel="stylesheet">
+    <style>
+        body{
+            font-family:'メイリオ',
+            'Hiragino Kaku Gothic Pro', sans-serif
+        }
+    </style>
     </head>
     
     <body>
@@ -21,5 +29,15 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
         <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js"></script>
+        <script type="text/javascript">
+        $(function() {
+          $(".tab a").click(function() {
+            $(this).parent().parent().addClass("active").siblings(".active").removeClass("active");
+            var tabContents = $(this).attr("href");
+            $(tabContents).addClass("active").siblings(".active").removeClass("active");
+            return false;
+          });
+        });
+        </script>
     </body>
 </html>

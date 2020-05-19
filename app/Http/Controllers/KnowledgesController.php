@@ -16,10 +16,11 @@ class KnowledgesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+     
+    //プラン一覧表示
     public function index()
     {
-        
-        $knowledges = Knowledge::paginate(25);
+        $knowledges = Knowledge::get();
         
         return view('knowledges.index', [
             'knowledges' => $knowledges,
@@ -31,6 +32,8 @@ class KnowledgesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+     
+    //プラン新規作成画面
     public function create()
     {
         $knowledge = new Knowledge;
@@ -45,6 +48,8 @@ class KnowledgesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+     
+     //プラン新規作成
     public function store(Request $request)
     {
          
@@ -69,6 +74,8 @@ class KnowledgesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+     
+     //プランの詳細画面
     public function show($knowledge_id)
     {
         $user = \Auth::user();
@@ -87,6 +94,8 @@ class KnowledgesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+     
+     //プラン編集画面
     public function edit($knowledge_id)
     {
         
@@ -102,6 +111,8 @@ class KnowledgesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+     
+     //プランを編集（更新）する
     public function update(Request $request, $knowledge_id)
     {
         $this->validate($request, [
@@ -121,6 +132,8 @@ class KnowledgesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+     
+     //プランを削除する
     public function destroy($id)
     {
         $knowledge = Knowledge::find($id);
@@ -128,49 +141,34 @@ class KnowledgesController extends Controller
 
         return redirect('/');
     }
-    public function myplan(){   
-        $data = [];
-        if (\Auth::check()) {
+    
+    //マイページ
+    public function mypage(){
+         $data = [];
+         if (\Auth::check()) {
             $user = \Auth::user();
+              
+            // マイプラン一覧取得
             $knowledges = Knowledge::where('user_id',$user->id)->get();
-            $request_plans = Request_plan::where('user_id',$user->id)
-            ->join('knowledges','knowledges.knowledge_id','=','request_plans.knowledge_id')->join('users','users.id','=','request_plans.request_user_id')
-            ->get();
-           
-            $data = [
-                'user' => $user,
-                'knowledges' => $knowledges,
-                'request_plans' => $request_plans,
-                
-            ];
-        }
-        
-        return view('knowledges.myplan', $data);
-    }
-     public function requestplan(){
-       $data = [];
-        if (\Auth::check()) {
-            $user = \Auth::user();
+            // マイプラン一覧のうちリクエストが来たプランを取得
+            $myplans_requested = Request_plan::where('plan_status','approved')->orWhere('plan_status','pending')
+                ->join('knowledges','knowledges.knowledge_id','=','request_plans.knowledge_id')->join('users','users.id','=','request_plans.request_user_id')
+                ->get();
+            // リクエストプラン一覧取得
             $request_plans = Request_plan::where('request_user_id',$user->id)
-            ->join('knowledges','knowledges.knowledge_id','=','request_plans.knowledge_id')
-            ->get();
-           
-           
-            $knowledges = Knowledge::get();
+                ->join('knowledges','knowledges.knowledge_id','=','request_plans.knowledge_id')
+                ->get();
             
             $data = [
                 'user' => $user,
                 'knowledges' => $knowledges,
                 'request_plans' => $request_plans,
-              
+                'myplans_requested' => $myplans_requested,
+                
             ];
-        }
-        return view('knowledges.requestplan', $data);
-     }
-     public function mypage(){
-         
+         }
         
-         return view('knowledges.mypage');
+         return view('knowledges.mypage', $data);
      }
      
 }

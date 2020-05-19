@@ -10,13 +10,18 @@ use App\User;
 
 class ChatsController extends Controller
 {
+    //チャットメッセージ一覧
     public function getChatList($id){
         $user = \Auth::user();
         $request_plans = Request_plan::find($id);
         $knowledge = Knowledge::where('knowledge_id',$request_plans->knowledge_id)->first();
+        
+        //ログインユーザーが依頼者である場合、プラン作成者のユーザー情報を取得
         if($user->id == $request_plans->request_user_id){
             $receiver = User::where('id',$knowledge->user_id)->first();
-        }elseif($user->id == $knowledge->user_id){
+        }
+        //ログインユーザーがプラン作成者である場合、依頼者のユーザー情報を取得
+        elseif($user->id == $knowledge->user_id){
             $receiver = User::where('id',$request_plans->request_user_id)->first();
         }
         

@@ -9,6 +9,7 @@
     <link href="https://fontawesome.com/icons/bolt?style=solid" rel="stylesheet">
     <style>
         body{
+            background:rgba(189, 191, 63, 0.02);
             font-family:'メイリオ',
             'Hiragino Kaku Gothic Pro', sans-serif
         }

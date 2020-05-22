@@ -15,8 +15,20 @@
           border: 1px solid #ccc;
           background-color: #ffffff;
         }
+        .name{
+            margin-bottom: 10px;
+            color:white;
+            font-size:10px;
+            
+        }
+        .name a{
+            background-color:rgba(191, 63, 129, 1);
+            color: white;
+            border:solid 4px rgba(191, 63, 129, 1);
+            border-radius:4px;
+        }
         h2 {
-            color:rgba(73, 65, 98, 0.8);
+            color:black;
             font-weight:normal;
             text-align:center;
              font-size:40px;
@@ -25,7 +37,7 @@
             text-align:center;
         }
         h3 a{
-            color:rgba(14, 13, 16, 0.65);
+            color:black;
             font-weight:bold;
             text-align:center;
             font-size:24px;
@@ -59,10 +71,10 @@
             display: block;
         }
         h4{
-           color:gray;
+           color:black;
             font-weight:normal;
             text-align:left;
-            font-size:18px;
+            font-size:16px;
             
         }
         button.btn{
@@ -82,7 +94,7 @@
                         <h3><a>{!! link_to_route('knowledges.show', $knowledge->title, ['knowledge_id' => $knowledge->knowledge_id]) !!}</a></h3>
                         
                         <h4>{{ $knowledge->content }}</h4>
-                        <p>{{  $knowledge->user->name."さんのプランです"  }}</p>
+                        <div class="name"><a>{{  $knowledge->user->name."さんのプランです"  }}</a></div>
                         <div class="form-detail">{!! link_to_route('knowledges.show', '詳細をみる', ['knowledge_id' => $knowledge->knowledge_id] ) !!}</div>
                     </div>
                 @endforeach

@@ -3,12 +3,12 @@
 @section('content')
     <style>
         h2 {
-            color:silver;
-            font-weight:normal;
+            color:gray;
+            font-weight:bold;
             text-align:center;
         }
         p{
-            color:rgba(103, 105, 98, 0.9);
+            color:gray;
             margin:0;
             text-align:center;
             
@@ -21,10 +21,11 @@
             width:1000px;
         }
         
-        button.btn {
+        .btn {
              padding: 10px 100px;
             
         }
+        
     </style>
     <div class="row">    
         
@@ -54,8 +55,7 @@
                             <a>{!! Form::textarea('content',null,['class' => 'form-control']) !!}</a>
                         </div>
                     
-                        <div class="toukou"><button type="submit" class="btn btn-secondary" >投稿</button></div>
-                        
+                        <div class="toukou">{!! Form::submit('投稿', ['class' => 'btn btn-secondary']) !!}</div>
     
                     {!! Form::close() !!}
                 </div>

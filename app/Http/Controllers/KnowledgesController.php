@@ -14,10 +14,11 @@ class KnowledgesController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * プラン一覧表示
+     * 
      * @return \Illuminate\Http\Response
      */
      
-    //プラン一覧表示
     public function index()
     {
         $knowledges = Knowledge::get();
@@ -30,10 +31,11 @@ class KnowledgesController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * プラン新規作成画面
+     * 
      * @return \Illuminate\Http\Response
      */
      
-    //プラン新規作成画面
     public function create()
     {
         $knowledge = new Knowledge;
@@ -46,10 +48,12 @@ class KnowledgesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * 
+     * プラン新規作成
+     * 
      * @return \Illuminate\Http\Response
      */
      
-     //プラン新規作成
     public function store(Request $request)
     {
          
@@ -72,10 +76,12 @@ class KnowledgesController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
+     * 
+     * プランの詳細画面
+     * 
      * @return \Illuminate\Http\Response
      */
      
-     //プランの詳細画面
     public function show($knowledge_id)
     {
         $user = \Auth::user();
@@ -92,10 +98,12 @@ class KnowledgesController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
+     * 
+     * プラン編集画面
+     * 
      * @return \Illuminate\Http\Response
      */
-     
-     //プラン編集画面
+    
     public function edit($knowledge_id)
     {
         
@@ -109,10 +117,12 @@ class KnowledgesController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
+     * 
+     * プランを編集（更新）する
+     * 
      * @return \Illuminate\Http\Response
      */
      
-     //プランを編集（更新）する
     public function update(Request $request, $knowledge_id)
     {
         $this->validate($request, [
@@ -130,10 +140,12 @@ class KnowledgesController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
+     * 
+     * プランを削除する
+     * 
      * @return \Illuminate\Http\Response
      */
-     
-     //プランを削除する
+    
     public function destroy($id)
     {
         $knowledge = Knowledge::find($id);
@@ -142,7 +154,7 @@ class KnowledgesController extends Controller
         return redirect('/');
     }
     
-    //マイページ
+    //マイページを表示する
     public function mypage(){
          $data = [];
          if (\Auth::check()) {

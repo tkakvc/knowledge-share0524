@@ -1,9 +1,14 @@
 <header>
     <style>
       .header-left h1 a{
-        color:rgba(14, 13, 16, 0.65);
+        color:rgba(0, 11, 11, 0.74);
         text-decoration:none;
         font-weight: bold;
+        
+      }
+      h1{
+        background:white;
+        margin-bottom: 0;
       }
       .navbar ul{
         margin:0;
@@ -14,7 +19,7 @@
       .navbar li a{
         display:block;
         
-        color:black;
+        color:white;
         font-size:14px;
         text-decoration:none;
         padding: 10px ;
@@ -32,12 +37,13 @@
         
       }
       .navbar{
-        background-color:silver;
+        background-color:rgba(0, 11, 11, 0.44);
         margin-bottom:10px;
         padding:0;
+        
       }
       .navbar li a:hover{
-        background-color:rgba(0, 11, 11, 0.24);
+        background-color:silver;
       }
       .navbar{
       

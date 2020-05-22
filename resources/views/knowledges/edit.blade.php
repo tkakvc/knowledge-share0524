@@ -3,14 +3,15 @@
 @section('content')
     <style>
         h2 {
-            color:silver;
-            font-weight:normal;
+            color:gray;
+            font-weight:bold;
             text-align:center;
         }
         p{
             color:rgba(103, 105, 98, 0.9);
             margin:0;
             text-align:center;
+            
             
         }
         .toukou{
@@ -21,9 +22,12 @@
             width:1000px;
         }
         
-        button.btn {
+        .btn-secondary {
              padding: 10px 100px;
             
+        }
+        .form-group p{
+            border-left:solid 6px #3c9b2f;
         }
     </style>
     <div class="row">    
@@ -52,7 +56,8 @@
                                 {!! Form::label('content','プランの内容' )!!}
                                 {!! Form::textarea('content',null,['class' => 'form-control']) !!}
                             </div>
-                            <div class="toukou"><button type="submit" class="btn btn-secondary" >更新</button></div>
+                            <div class="toukou">{!! Form::submit('更新', ['class' => 'btn btn-secondary']) !!}</div>
+                            
                         {!! Form::close() !!}
                     </div>
                 </div>
